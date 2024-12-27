@@ -1,15 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import api from "../api/axios";
 
 const Redirect = () => {
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
+  const isFirstRender = useRef(true);
 
+  const queryParams = new URLSearchParams(location.search);
   const AUTH_CODE = queryParams.get("code");
   const socialProvider = "GOOGLE";
 
   useEffect(() => {
+    if (!isFirstRender.current) return;
+    isFirstRender.current = false;
+
     if (AUTH_CODE) {
       console.log("Authorization Code: ", AUTH_CODE);
 
